@@ -1,34 +1,7 @@
 #!/usr/bin/env runhaskell
 {-# OPTIONS_GHC -Wall #-}
 
--- Luhn algorithm
-
-toDigits :: Int -> [Int]
-toDigits n
-    | n > 0     = toDigits (n `div` 10) ++ [n `mod` 10]
-    | otherwise = []
-
--- I don't use this function
---toDigitsRev :: Int -> [Int]
---toDigitsRev = reverse . toDigits
-
-doubleEveryOtherBackwards :: [Int] -> [Int]
-doubleEveryOtherBackwards (x:y:xs) = x : (2 * y) : doubleEveryOtherBackwards xs
-doubleEveryOtherBackwards xs = xs
-
-doubleEveryOther :: [Int] -> [Int]
-doubleEveryOther = reverse . doubleEveryOtherBackwards . reverse
-
-sumDigits :: [Int] -> Int
-sumDigits [] = 0
-sumDigits (x:xs)
-    | x > 9     = (sumDigits . toDigits) x + sumDigits xs
-    | otherwise = x + sumDigits xs
-
-validate :: Int -> Bool
-validate n = (sumDigits . doubleEveryOther . toDigits) n `mod` 10 == 0
-
--- Tower of Hanoi
+module Hanoi where
 
 type Peg = String
 type Move = (Peg, Peg)
@@ -55,12 +28,8 @@ quadraticRoot a b c = (-b + sqrt (b * b - 4 * a * c)) / (2 * a)
 optimalPartition :: Int -> Int
 optimalPartition = floor . quadraticRoot 1 1 . fromIntegral . negate . (* 2)
 
--- main
-
 main :: IO ()
 main = do
-    putStrLn "Luhn algorithm:"
-    print $ validate 4012888888881881
     putStrLn "Towers of Hanoi, 3 pegs, 4 discs:"
     print $ hanoi 4 "a" "b" "c"
     putStrLn "Takes 32767 moves for 15 pegs:"
