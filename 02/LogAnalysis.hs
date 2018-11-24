@@ -6,11 +6,11 @@ module LogAnalysis where
 import Log
 
 parseMessage :: String -> LogMessage
-parseMessage str = let line = words str in case line of
+parseMessage str = case words str of
     ("I":ts:m)   -> LogMessage Info (read ts :: Int) (unwords m)
     ("W":ts:m)   -> LogMessage Warning (read ts :: Int) (unwords m)
     ("E":s:ts:m) -> LogMessage (Error (read s :: Int)) (read ts :: Int) (unwords m)
-    _            -> Unknown (unwords line)
+    _            -> Unknown str
 
 parse :: String -> [LogMessage]
 parse = map parseMessage . lines
