@@ -6,12 +6,12 @@ INTERFACES=$(subst .hs,.hi,$(SRCS))
 all: $(SRCS)
 	@ghc $(SRCS)
 
-tags: $(SRC)
+tags: $(SRCS)
 	@echo ":ctags" | ghci -v0 $(SRCS)
 
 .PHONY: lint
-lint: $(SRC)
-	@hlint .
+lint: $(SRCS)
+	@hlint $(SRCS)
 
 .PHONY: clean
 clean:
